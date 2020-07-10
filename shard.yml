@@ -1,0 +1,9 @@
+name: songpro
+version: 0.1.0
+
+authors:
+  - Brian Kelly <polymonic@gmail.com>
+
+crystal: 0.35.1
+
+license: MIT
