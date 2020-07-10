@@ -1,6 +1,8 @@
-# songpro
+# SongPro for Crystal
 
-TODO: Write a description here
+[SongPro](https://songpro.org) is a text format for transcribing songs.
+ 
+This project is a Crystal Shard that converts the song into a Song data model which can then be converted into various output formats such as text or HTML.
 
 ## Installation
 
@@ -9,7 +11,7 @@ TODO: Write a description here
    ```yaml
    dependencies:
      songpro:
-       github: your-github-user/songpro
+       github: SongProOrg/songpro-crystal
    ```
 
 2. Run `shards install`
@@ -18,22 +20,20 @@ TODO: Write a description here
 
 ```crystal
 require "songpro"
+
+song = SongPro.parse(text)
 ```
 
 TODO: Write usage instructions here
 
 ## Development
 
-TODO: Write development instructions here
+After checking out the repo, run `crystal spec` to run the tests.
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/songpro/fork>)
+1. Fork it (<https://github.com/SongProOrg/songpro-crystal/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
-
-## Contributors
-
-- [your-name-here](https://github.com/your-github-user) - creator and maintainer
