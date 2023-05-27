@@ -4,6 +4,6 @@ version: 0.1.0
 authors:
   - Brian Kelly <polymonic@gmail.com>
 
-crystal: 1.4.0
+crystal: 1.8.2
 
 license: MIT
