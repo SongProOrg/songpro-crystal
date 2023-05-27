@@ -52,5 +52,49 @@ describe SongPro do
         song.sections[1].name.should eq "Chorus"
       end
     end
+
+    context "lyrics" do
+      it "parses lyrics" do
+        song = SongPro.parse("I don't see! a bad, moon a-rising. (a-rising)")
+
+        song.sections.size.should eq 1
+        song.sections[0].lines.size.should eq 1
+        song.sections[0].lines[0].parts.size.should eq 1
+        song.sections[0].lines[0].parts[0].lyric.should eq "I don't see! a bad, moon a-rising. (a-rising)"
+      end
+
+      it "handles parens in lyics" do
+        song = SongPro.parse("singing something (something else)")
+
+        song.sections.size.should eq 1
+        song.sections[0].lines.size.should eq 1
+        song.sections[0].lines[0].parts.size.should eq 1
+        song.sections[0].lines[0].parts[0].lyric.should eq "singing something (something else)"
+      end
+
+      it "handles special characters" do
+        song = SongPro.parse("singing sömething with Röck dots")
+
+        song.sections.size.should eq 1
+        song.sections[0].lines.size.should eq 1
+        song.sections[0].lines[0].parts.size.should eq 1
+        song.sections[0].lines[0].parts[0].lyric.should eq "singing sömething with Röck dots"
+      end
+    end
+
+      it "parses chords" do
+        song = SongPro.parse("[D] [D/F#] [C] [A7]")
+        song.sections.size.should eq 1
+        song.sections[0].lines.size.should eq 1
+        song.sections[0].lines[0].parts.size.should eq 4
+        song.sections[0].lines[0].parts[0].chord.should eq "D"
+        song.sections[0].lines[0].parts[0].lyric.should eq " "
+        song.sections[0].lines[0].parts[1].chord.should eq "D/F#"
+        song.sections[0].lines[0].parts[1].lyric.should eq " "
+        song.sections[0].lines[0].parts[2].chord.should eq "C"
+        song.sections[0].lines[0].parts[2].lyric.should eq " "
+        song.sections[0].lines[0].parts[3].chord.should eq "A7"
+        song.sections[0].lines[0].parts[3].lyric.should eq ""
+      end
   end
 end

@@ -3,9 +3,10 @@ require "./song"
 module SongPro
   VERSION = "0.1.0"
 
-  SECTION_REGEX = /#\s*([^$]*)/
-  ATTRIBUTE_REGEX = /@(\w*)=([^%]*)/
-  CUSTOM_ATTRIBUTE_REGEX = /!(\w*)=([^%]*)/
+  SECTION_REGEX           = /#\s*([^$]*)/
+  ATTRIBUTE_REGEX         = /@(\w*)=([^%]*)/
+  CUSTOM_ATTRIBUTE_REGEX  = /!(\w*)=([^%]*)/
+  CHORDS_AND_LYRICS_REGEX = %r{(\[[\w#b+/]+\])?([^\[]*)}i
 
   def self.parse(lines : String)
     song = Song.new
@@ -18,6 +19,8 @@ module SongPro
         process_custom_attribute(song, text)
       elsif text.starts_with?("#")
         current_section = process_section(song, text)
+      else
+        process_lyrics_and_chords(song, current_section, text)
       end
     end
 
@@ -68,5 +71,28 @@ module SongPro
 
       song.custom[key] = value
     end
+  end
+
+  def self.process_lyrics_and_chords(song, current_section, text)
+    return if text == ""
+
+    if current_section.nil?
+      current_section = Section.new(name: "")
+      song.sections << current_section
+    end
+
+    line = Line.new
+
+    captures = text.scan(CHORDS_AND_LYRICS_REGEX)
+    captures.each do |pair|
+      part = Part.new
+
+      part.chord = pair[1]? ? pair[1].strip.gsub("[", "").gsub("]", "") : ""
+      part.lyric = pair[2]? ? pair[2] : ""
+
+      line.parts << part unless (part.chord == "") && (part.lyric == "")
+    end
+
+    current_section.lines << line
   end
 end
