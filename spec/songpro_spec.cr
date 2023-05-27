@@ -34,7 +34,7 @@ describe SongPro do
       song.custom["spotify_url"].should eq "https://open.spotify.com/track/5zADxJhJEzuOstzcUtXlXv?si=SN6U1oveQ7KNfhtD2NHf9A"
     end
 
-    describe "sections" do
+    context "sections" do
       it "parses section names" do
         song = SongPro.parse("# Verse 1")
 
@@ -82,19 +82,56 @@ describe SongPro do
       end
     end
 
-    it "parses chords" do
-      song = SongPro.parse("[D] [D/F#] [C] [A7]")
-      song.sections.size.should eq 1
-      song.sections[0].lines.size.should eq 1
-      song.sections[0].lines[0].parts.size.should eq 4
-      song.sections[0].lines[0].parts[0].chord.should eq "D"
-      song.sections[0].lines[0].parts[0].lyric.should eq " "
-      song.sections[0].lines[0].parts[1].chord.should eq "D/F#"
-      song.sections[0].lines[0].parts[1].lyric.should eq " "
-      song.sections[0].lines[0].parts[2].chord.should eq "C"
-      song.sections[0].lines[0].parts[2].lyric.should eq " "
-      song.sections[0].lines[0].parts[3].chord.should eq "A7"
-      song.sections[0].lines[0].parts[3].lyric.should eq ""
+    context "chords" do
+      it "parses chords" do
+        song = SongPro.parse("[D] [D/F#] [C] [A7]")
+        song.sections.size.should eq 1
+        song.sections[0].lines.size.should eq 1
+        song.sections[0].lines[0].parts.size.should eq 4
+        song.sections[0].lines[0].parts[0].chord.should eq "D"
+        song.sections[0].lines[0].parts[0].lyric.should eq " "
+        song.sections[0].lines[0].parts[1].chord.should eq "D/F#"
+        song.sections[0].lines[0].parts[1].lyric.should eq " "
+        song.sections[0].lines[0].parts[2].chord.should eq "C"
+        song.sections[0].lines[0].parts[2].lyric.should eq " "
+        song.sections[0].lines[0].parts[3].chord.should eq "A7"
+        song.sections[0].lines[0].parts[3].lyric.should eq ""
+      end
+    end
+
+    context "chords and lyrics" do
+      it "parses chords and lyrics" do
+        song = SongPro.parse("[G]Don't go 'round tonight")
+        song.sections.size.should eq 1
+        song.sections[0].lines.size.should eq 1
+        song.sections[0].lines[0].parts.size.should eq 1
+        song.sections[0].lines[0].parts[0].chord.should eq "G"
+        song.sections[0].lines[0].parts[0].lyric.should eq "Don't go 'round tonight"
+      end
+
+      it "parses lyrics before chords" do
+        song = SongPro.parse("It's [D]bound to take your life")
+        song.sections.size.should eq 1
+        song.sections[0].lines.size.should eq 1
+        song.sections[0].lines[0].parts.size.should eq 2
+        song.sections[0].lines[0].parts[0].chord.should eq ""
+        song.sections[0].lines[0].parts[0].lyric.should eq "It's "
+        song.sections[0].lines[0].parts[1].chord.should eq "D"
+        song.sections[0].lines[0].parts[1].lyric.should eq "bound to take your life"
+      end
+
+      it "parses lyrics before chords" do
+        song = SongPro.parse("It's a[D]bout a [E]boy")
+        song.sections.size.should eq 1
+        song.sections[0].lines.size.should eq 1
+        song.sections[0].lines[0].parts.size.should eq 3
+        song.sections[0].lines[0].parts[0].chord.should eq ""
+        song.sections[0].lines[0].parts[0].lyric.should eq "It's a"
+        song.sections[0].lines[0].parts[1].chord.should eq "D"
+        song.sections[0].lines[0].parts[1].lyric.should eq "bout a "
+        song.sections[0].lines[0].parts[2].chord.should eq "E"
+        song.sections[0].lines[0].parts[2].lyric.should eq "boy"
+      end
     end
   end
 end
