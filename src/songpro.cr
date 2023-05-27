@@ -3,25 +3,38 @@ require "./song"
 module SongPro
   VERSION = "0.1.0"
 
+  SECTION_REGEX = /#\s*([^$]*)/
   ATTRIBUTE_REGEX = /@(\w*)=([^%]*)/
   CUSTOM_ATTRIBUTE_REGEX = /!(\w*)=([^%]*)/
 
   def self.parse(lines : String)
     song = Song.new
+    current_section = nil
 
     lines.split("\n").each do |text|
       if text.starts_with?("@")
         process_attribute(song, text)
       elsif text.starts_with?("!")
         process_custom_attribute(song, text)
+      elsif text.starts_with?("#")
+        current_section = process_section(song, text)
       end
     end
 
     return song
   end
 
+  def self.process_section(song, text)
+    if matches = SECTION_REGEX.match(text)
+      name = matches[1].strip
+      current_section = Section.new(name: name)
+      song.sections << current_section
+      current_section
+    end
+  end
+
   def self.process_attribute(song, text)
-    if matches = ATTRIBUTE_REGEX.match(text)    
+    if matches = ATTRIBUTE_REGEX.match(text)
       key = matches[1]
       value = matches[2].strip
 
@@ -49,11 +62,11 @@ module SongPro
   end
 
   def self.process_custom_attribute(song, text)
-    if matches = CUSTOM_ATTRIBUTE_REGEX.match(text)    
+    if matches = CUSTOM_ATTRIBUTE_REGEX.match(text)
       key = matches[1]
       value = matches[2].strip
 
       song.custom[key] = value
     end
-  end  
+  end
 end

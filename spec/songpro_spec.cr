@@ -33,5 +33,24 @@ describe SongPro do
       song.custom["difficulty"].should eq "Easy"
       song.custom["spotify_url"].should eq "https://open.spotify.com/track/5zADxJhJEzuOstzcUtXlXv?si=SN6U1oveQ7KNfhtD2NHf9A"
     end
+
+    describe "sections" do
+      it "parses section names" do
+        song = SongPro.parse("# Verse 1")
+
+        song.sections.size.should eq 1
+        song.sections[0].name.should eq "Verse 1"
+      end
+
+      it "parses multiple section names" do
+        song = SongPro.parse("
+# Verse 1
+# Chorus
+")
+        song.sections.size.should eq 2
+        song.sections[0].name.should eq "Verse 1"
+        song.sections[1].name.should eq "Chorus"
+      end
+    end
   end
 end
