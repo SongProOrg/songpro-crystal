@@ -82,19 +82,19 @@ describe SongPro do
       end
     end
 
-      it "parses chords" do
-        song = SongPro.parse("[D] [D/F#] [C] [A7]")
-        song.sections.size.should eq 1
-        song.sections[0].lines.size.should eq 1
-        song.sections[0].lines[0].parts.size.should eq 4
-        song.sections[0].lines[0].parts[0].chord.should eq "D"
-        song.sections[0].lines[0].parts[0].lyric.should eq " "
-        song.sections[0].lines[0].parts[1].chord.should eq "D/F#"
-        song.sections[0].lines[0].parts[1].lyric.should eq " "
-        song.sections[0].lines[0].parts[2].chord.should eq "C"
-        song.sections[0].lines[0].parts[2].lyric.should eq " "
-        song.sections[0].lines[0].parts[3].chord.should eq "A7"
-        song.sections[0].lines[0].parts[3].lyric.should eq ""
-      end
+    it "parses chords" do
+      song = SongPro.parse("[D] [D/F#] [C] [A7]")
+      song.sections.size.should eq 1
+      song.sections[0].lines.size.should eq 1
+      song.sections[0].lines[0].parts.size.should eq 4
+      song.sections[0].lines[0].parts[0].chord.should eq "D"
+      song.sections[0].lines[0].parts[0].lyric.should eq " "
+      song.sections[0].lines[0].parts[1].chord.should eq "D/F#"
+      song.sections[0].lines[0].parts[1].lyric.should eq " "
+      song.sections[0].lines[0].parts[2].chord.should eq "C"
+      song.sections[0].lines[0].parts[2].lyric.should eq " "
+      song.sections[0].lines[0].parts[3].chord.should eq "A7"
+      song.sections[0].lines[0].parts[3].lyric.should eq ""
+    end
   end
 end
