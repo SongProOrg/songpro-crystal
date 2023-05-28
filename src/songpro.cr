@@ -1,7 +1,7 @@
 require "./song"
 
 module SongPro
-  VERSION = "0.1.0"
+  VERSION = "0.1.11"
 
   SECTION_REGEX           = /#\s*([^$]*)/
   ATTRIBUTE_REGEX         = /@(\w*)=([^%]*)/
