@@ -134,6 +134,24 @@ describe SongPro do
       end
     end
 
+    context "chords" do
+      it "recognizes augmented chords" do
+        song = SongPro.parse("
+# Instrumental
+
+| [G+] |
+
+# Lyrics
+
+[G+]This is a G Augmented chord
+")
+
+        song.sections[0].lines[0].measures[0].chords.should eq %w[G+]
+        song.sections[1].lines[0].parts[0].chord.should eq "G+"
+      end
+    end
+
+
     context "measures" do
       it "parses chord-only measures" do
         song = SongPro.parse("
