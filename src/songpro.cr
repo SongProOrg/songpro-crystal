@@ -8,6 +8,9 @@ module SongPro
   CUSTOM_ATTRIBUTE_REGEX  = /!(\w*)=([^%]*)/
   CHORDS_AND_LYRICS_REGEX = %r{(\[[\w#b+/]+\])?([^\[]*)}i
 
+  MEASURES_REGEX = %r{([[\w#b/\]+\]\s]+)[|]*}i
+  CHORDS_REGEX = %r{\[([\w#b+/]+)\]?}i
+
   def self.parse(lines : String)
     song = Song.new
     current_section = nil
@@ -83,14 +86,29 @@ module SongPro
 
     line = Line.new
 
-    captures = text.scan(CHORDS_AND_LYRICS_REGEX)
-    captures.each do |pair|
-      part = Part.new
+    if text.starts_with?("| ")
+      captures = text.scan(MEASURES_REGEX)
+      measures = Array(Measure).new
 
-      part.chord = pair[1]? ? pair[1].strip.gsub("[", "").gsub("]", "") : ""
-      part.lyric = pair[2]? ? pair[2] : ""
+      captures.each do |capture|
+        chords = capture[1].scan(CHORDS_REGEX).map { |c| c[1] }
+        measure = Measure.new
+        measure.chords = chords
+        measures << measure
+      end
 
-      line.parts << part unless (part.chord == "") && (part.lyric == "")
+      line.measures = measures
+    else
+      captures = text.scan(CHORDS_AND_LYRICS_REGEX)
+      captures.each do |pair|
+        part = Part.new
+
+        part.chord = pair[1]? ? pair[1].strip.gsub("[", "").gsub("]", "") : ""
+        part.lyric = pair[2]? ? pair[2] : ""
+
+        line.parts << part unless (part.chord == "") && (part.lyric == "")
+      end
+
     end
 
     current_section.lines << line

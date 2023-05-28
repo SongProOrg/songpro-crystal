@@ -133,5 +133,22 @@ describe SongPro do
         song.sections[0].lines[0].parts[2].lyric.should eq "boy"
       end
     end
+
+    context "measures" do
+      it "parses chord-only measures" do
+        song = SongPro.parse("
+# Instrumental
+
+| [A] [B] | [C] | [D] [E] [F] [G] |
+")
+
+        song.sections.size.should eq 1
+        song.sections[0].lines[0].measures?.should eq true
+        song.sections[0].lines[0].measures.size.should eq 3
+        song.sections[0].lines[0].measures[0].chords.should eq %w[A B]
+        song.sections[0].lines[0].measures[1].chords.should eq %w[C]
+        song.sections[0].lines[0].measures[2].chords.should eq %w[D E F G]
+      end
+    end
   end
 end
