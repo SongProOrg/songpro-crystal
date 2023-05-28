@@ -9,8 +9,8 @@ module SongPro
   CHORDS_AND_LYRICS_REGEX = %r{(\[[\w#b+/]+\])?([^\[]*)}i
 
   MEASURES_REGEX = %r{([[\w#b/\]+\]\s]+)[|]*}i
-  CHORDS_REGEX = %r{\[([\w#b+/]+)\]?}i
-  COMMENT_REGEX = />\s*([^$]*)/
+  CHORDS_REGEX   = %r{\[([\w#b+/]+)\]?}i
+  COMMENT_REGEX  = />\s*([^$]*)/
 
   def self.parse(lines : String)
     song = Song.new

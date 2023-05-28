@@ -151,7 +151,6 @@ describe SongPro do
       end
     end
 
-
     context "measures" do
       it "parses chord-only measures" do
         song = SongPro.parse("
