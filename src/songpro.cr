@@ -86,7 +86,9 @@ module SongPro
 
     line = Line.new
 
-    if text.starts_with?("| ")
+    if text.starts_with?("|-")
+      line.tablature = text
+    elsif text.starts_with?("| ")
       captures = text.scan(MEASURES_REGEX)
       measures = Array(Measure).new
 

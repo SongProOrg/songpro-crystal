@@ -150,5 +150,21 @@ describe SongPro do
         song.sections[0].lines[0].measures[2].chords.should eq %w[D E F G]
       end
     end
+
+    context "tablature" do
+      it "parses tablature" do
+        song = SongPro.parse("
+# Riff
+
+|-3---5-|
+|---4---|
+")
+        song.sections.size.should eq 1
+        song.sections[0].lines[0].tablature?.should eq true
+        song.sections[0].lines[0].tablature.should eq "|-3---5-|"
+        song.sections[0].lines[1].tablature?.should eq true
+        song.sections[0].lines[1].tablature.should eq "|---4---|"
+      end
+    end
   end
 end
