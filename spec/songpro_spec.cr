@@ -166,5 +166,19 @@ describe SongPro do
         song.sections[0].lines[1].tablature.should eq "|---4---|"
       end
     end
+
+    context "comments" do
+      it "parses comments" do
+        song = SongPro.parse("
+# Comment
+
+> This is a comment.
+")
+
+        song.sections.size.should eq 1
+        song.sections[0].lines[0].comment?.should eq true
+        song.sections[0].lines[0].comment.should eq "This is a comment."
+      end
+    end
   end
 end
