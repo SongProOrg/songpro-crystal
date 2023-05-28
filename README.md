@@ -20,8 +20,6 @@ This project is a Crystal Shard that converts the song into a Song data model wh
 
 ## Usage
 
-## Usage
-
 Given then file `escape-capsule.sng` with the following contents:
 
 ```
@@ -59,6 +57,8 @@ puts song.artist
 puts song.sections[1].name
 # Chorus 1
 
+p song.chords
+# ["D", "A", "Bm", "F#m", "G", "Asus4", "A7", "F#"]
 ```
 
 ## Development
